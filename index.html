@@ -50,7 +50,7 @@
                 if (data?.crate?.recent_downloads) {
                     recentSpanEl.innerHTML = data.crate.recent_downloads;
                 } else {
-                    recentSpanEl.innerHTML = 'Recent downloads not found';
+                    recentSpanEl.innerHTML = '';
                 }
             })
             .catch(error => console.error('Error:', error))
