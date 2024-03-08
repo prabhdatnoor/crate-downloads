@@ -9,11 +9,10 @@
 </head>
 
 <script defer>
-    // fetch json from server
-
     window.onload = () => {
         const downloadCountEl = document.getElementById('downloadCount');
         const crateNameEl = document.getElementById('crateName');
+        const reloadButtonEl = document.getElementById('reloadButton');
 
         // get the parameter from the url
         const urlParams = new URLSearchParams(window.location.search);
@@ -21,7 +20,6 @@
 
         const crateNotFoundError = () => {
             downloadCountEl.innerHTML = 'Crate name not found';
-
         }
 
         // if crate name is not found then return
@@ -30,8 +28,7 @@
             return;
         }
 
-
-        fetch(`https://crates.io/api/v1/crates/${crateName}`)
+        const fetchCrate = () => fetch(`https://crates.io/api/v1/crates/${crateName}`)
             .then(response => response.json())
             .then(data => {
                 // check crate name exist or not
@@ -50,12 +47,71 @@
 
 
             })
-            .catch(error => console.error('Error:', error));
+            .catch(error => console.error('Error:', error))
+            .finally(() => {
+                clearInterval(interval);
+                time = 60;
+                setTime(time);
+                startTimer();
+                console.log('Fetched');
+            });
+
+        fetchCrate();
+
+        // Timer
+        const timerEl = document.getElementById('Timer');
+        let time = 60;
+        let interval = null;
+
+        const setTime = (time) => {
+            timerEl.innerHTML = `${time}s`;
+        }
+
+        const startTimer = () => {
+            interval = setInterval(() => {
+                time--;
+                setTime(time);
+                if (time === 0) {
+                    clearInterval(interval);
+                    time = 60;
+                    setTime(time);
+                    fetchCrate();
+                }
+            }, 1000);
+        }
+
+        // if reload button is clicked
+        reloadButtonEl.addEventListener('click', () => {
+            clearInterval(interval);
+            time = 60;
+            setTime(time);
+            startTimer();
+            fetchCrate();
+        });
+
+        startTimer();
     }
 
 </script>
 
 <body>
+    <div id="timerContainer">
+        <button id="reloadButton">
+            <svg fill="#fff" height="10vh" width="10vh" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 489.533 489.533" xml:space="preserve">
+                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                <g id="SVGRepo_iconCarrier">
+                    <g>
+                        <path
+                            d="M268.175,488.161c98.2-11,176.9-89.5,188.1-187.7c14.7-128.4-85.1-237.7-210.2-239.1v-57.6c0-3.2-4-4.9-6.7-2.9 l-118.6,87.1c-2,1.5-2,4.4,0,5.9l118.6,87.1c2.7,2,6.7,0.2,6.7-2.9v-57.5c87.9,1.4,158.3,76.2,152.3,165.6 c-5.1,76.9-67.8,139.3-144.7,144.2c-81.5,5.2-150.8-53-163.2-130c-2.3-14.3-14.8-24.7-29.2-24.7c-17.9,0-31.9,15.9-29.1,33.6 C49.575,418.961,150.875,501.261,268.175,488.161z">
+                        </path>
+                    </g>
+                </g>
+            </svg>
+        </button>
+        <p id="Timer">1:00</p>
+    </div>
     <h1 id="downloadCount">Fetching</h1>
     <p>Downloads</p>
     <h2 id="crateName">Crate Name</h2>
@@ -77,6 +133,20 @@
         background-color: black;
         color: white;
         font-size: 10vh;
+    }
+
+    #reloadButton {
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+    }
+
+    #timerContainer {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: "7vh" !important;
+        color: gray;
     }
 </style>
 
