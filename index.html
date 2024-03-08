@@ -13,6 +13,7 @@
         const downloadCountEl = document.getElementById('downloadCount');
         const crateNameEl = document.getElementById('crateName');
         const reloadButtonEl = document.getElementById('reloadButton');
+        const recentSpanEl = document.getElementById('recentSpan');
 
         // get the parameter from the url
         const urlParams = new URLSearchParams(window.location.search);
@@ -45,7 +46,12 @@
                     downloadCountEl.innerHTML = 'Download count not found';
                 }
 
-
+                // check recent downloads exist or not
+                if (data?.crate?.recent_downloads) {
+                    recentSpanEl.innerHTML = data.crate.recent_downloads;
+                } else {
+                    recentSpanEl.innerHTML = 'Recent downloads not found';
+                }
             })
             .catch(error => console.error('Error:', error))
             .finally(() => {
@@ -59,12 +65,12 @@
         fetchCrate();
 
         // Timer
-        const timerEl = document.getElementById('Timer');
+        const timerEl = document.getElementById('timer');
         let time = 60;
         let interval = null;
 
         const setTime = (time) => {
-            timerEl.innerHTML = `${time}s`;
+            timerEl.innerHTML = `${time}`;
         }
 
         const startTimer = () => {
@@ -97,7 +103,7 @@
 <body>
     <div id="timerContainer">
         <button id="reloadButton">
-            <svg fill="#fff" height="10vh" width="10vh" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
+            <svg fill="#fff" version="1.1" height="3em" width="3em" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
                 xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 489.533 489.533" xml:space="preserve">
                 <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                 <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -110,16 +116,18 @@
                 </g>
             </svg>
         </button>
-        <p id="Timer">1:00</p>
+        <p><span id="timer"></span>s</p>
     </div>
     <h1 id="downloadCount">Fetching</h1>
     <p>Downloads</p>
+    <h4>+<span id="recentSpan"></span> Recent</h4>
     <h2 id="crateName">Crate Name</h2>
 </body>
 
 <style>
     h1,
     h2,
+    h4,
     p {
         margin: 0 !important;
     }
@@ -132,7 +140,7 @@
         flex-direction: column;
         background-color: black;
         color: white;
-        font-size: 10vh;
+        font-size: 5rem;
     }
 
     #reloadButton {
@@ -145,7 +153,6 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: "7vh" !important;
         color: gray;
     }
 </style>
