@@ -1,6 +1,12 @@
 Simple webpage to check crates.io package downloads.
 
-I find this useful for my smart watch for example as a Watch tile
-
 # Run
-just open up index.html in your favourite browser :)
+add the package name as param to end of the url, like so (replace curly braces as well):
+```
+.../index.html?crate={package_name}
+```
+
+## Without downloading
+just add 'rawgithack.com' to the beginning of the github link:
+ 
+[https://raw.githack.com/prabhdatnoor/crate-downloads/main/index.html](https://raw.githack.com/prabhdatnoor/crate-downloads/main/index.html)
