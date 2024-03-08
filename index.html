@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<script defer>
+    // fetch json from server
+
+    window.onload = () => {
+        const downloadCountEl = document.getElementById('downloadCount');
+        const crateNameEl = document.getElementById('crateName');
+
+        fetch('https://crates.io/api/v1/crates/lorem')
+            .then(response => response.json())
+            .then(data => {
+                // check crate name exist or not
+                if (data?.crate?.name) {
+                    crateNameEl.innerHTML = data.crate.name;
+                } else {
+                    crateNameEl.innerHTML = 'Crate name not found';
+                }
+
+                // check download count exist or not
+                if (data?.crate?.downloads) {
+                    downloadCountEl.innerHTML = data.crate.downloads;
+                } else {
+                    downloadCountEl.innerHTML = 'Download count not found';
+                }
+
+
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+</script>
+
+<body>
+    <h1 id="downloadCount">Fetching</h1>
+    <p>Downloads</p>
+    <h2 id="crateName">Crate Name</h2>
+</body>
+
+<style>
+    h1,
+    h2,
+    p {
+        margin: 0 !important;
+    }
+
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        flex-direction: column;
+        background-color: black;
+        color: white;
+    }
+</style>
+
+</html>
