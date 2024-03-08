@@ -119,8 +119,7 @@
         <p><span id="timer"></span>s</p>
     </div>
     <h1 id="downloadCount">Fetching</h1>
-    <p>Downloads</p>
-    <h4>+<span id="recentSpan"></span> Recent</h4>
+    <p><span class="green">+</span><span id="recentSpan" class="green"></span> Recent</p>
     <h2 id="crateName">Crate Name</h2>
 </body>
 
@@ -128,8 +127,13 @@
     h1,
     h2,
     h4,
-    p {
+    p,
+    span {
         margin: 0 !important;
+    }
+
+    p {
+        font-size: 2rem;
     }
 
     body {
@@ -154,6 +158,10 @@
         align-items: center;
         justify-content: center;
         color: gray;
+    }
+
+    .green {
+        color: green;
     }
 </style>
 
